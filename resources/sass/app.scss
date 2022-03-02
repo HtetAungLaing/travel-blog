@@ -1,0 +1,23 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap");
+// Variables
+// Typography
+$font-family-sans-serif: "Montserrat", sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+$border-radius: 1rem;
+$border-radius-lg: 2rem;
+
+$primary: #2c9290;
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+body {
+    background: rgb(252, 245, 251);
+}
+.nav-profile-photo {
+    width: 30px;
+    height: 30px;
+}
