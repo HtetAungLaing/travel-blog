@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -25,7 +27,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('post.create');
     }
 
     /**
@@ -36,7 +38,24 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+
+        $request->validate([
+            "title" => "required|min:5|unique:posts,title",
+            "description" => "required|min:10",
+            "cover" => "required|mimes:png,jpg"
+        ]);
+        $file = $request->file('cover');
+        $coverName = "cover-" . uniqid() . "." . $file->extension();
+        $file->storeAs('public/cover', $coverName);
+        $post = new Post();
+        $post->title = $request->title;
+        $post->slug = Str::slug($request->title);
+        $post->description = $request->description;
+        $post->excerpt = Str::words($request->description, 50);
+        $post->user_id = Auth::id();
+        $post->cover = $coverName;
+        $post->save();
+        return redirect()->route('index');
     }
 
     /**

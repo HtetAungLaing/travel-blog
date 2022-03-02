@@ -6,13 +6,16 @@ $font-family-sans-serif: "Montserrat", sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
-$border-radius: 1rem;
+$border-radius: 1.3rem;
 $border-radius-lg: 2rem;
 
-$primary: #2c9290;
+$primary: #398f8f;
 
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
+
+// fontawesome
+@import "../../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 
 body {
     background: rgb(252, 245, 251);
@@ -20,4 +23,19 @@ body {
 .nav-profile-photo {
     width: 30px;
     height: 30px;
+}
+.post-card {
+    height: 300px;
+}
+.cover-upload:hover {
+    cursor: pointer;
+}
+.card-cover {
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.post-text {
+    background: rgba(255, 255, 255, 0.301);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
