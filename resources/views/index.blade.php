@@ -13,8 +13,8 @@
         </div>
     @endauth
     <div class="container">
-        @foreach ($posts as $post)
-            <div class="row justify-content-center mb-3">
+        <div class="row justify-content-center mb-3">
+            @foreach ($posts as $post)
                 <div class="col-12 col-lg-6">
                     <div class="card-cover post-card border shadow position-relative rounded-3"
                         style="background-image: url('{{ asset('storage/cover/' . $post->cover) }}')">
@@ -29,14 +29,20 @@
                                     <i class="fas fa-calendar fw"></i>
                                     {{ $post->created_at->format('d-M-Y') }}
                                 </div>
-                                <p class="mb-0">
-                                    {{ Str::words($post->excerpt, 20) }}
-                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="mb-0 px-2">
+                                        {{ Str::words($post->excerpt, 20) }}
+                                    </p>
+                                    <a href="{{ route('post.detail', $post->slug) }}"
+                                        class="btn btn-outline-warning btn-sm">
+                                        <i class="fas fa-chevron-right fa-fw"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
     </div>
 @endsection
