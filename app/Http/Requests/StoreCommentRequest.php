@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCommentRequest extends FormRequest
@@ -13,7 +14,7 @@ class StoreCommentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Post::find($this->post_id);
     }
 
     /**
@@ -24,7 +25,8 @@ class StoreCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "comment" => "required|max:200",
+            "post_id" => "required|exists:posts,id"
         ];
     }
 }

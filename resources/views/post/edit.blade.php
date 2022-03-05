@@ -9,9 +9,11 @@
                     </h3>
                     <form action="{{ route('post.update', $post->id) }}" method="post" enctype='multipart/form-data'>
                         @csrf
+                        @method('put')
                         <div class="form-floating mb-3">
                             <input required type="text" class="form-control @error('title') is-invalid @enderror"
-                                id="floatingInput" placeholder="Post's Title" name="title" value="{{ old('title') }}">
+                                id="floatingInput" placeholder="Post's Title" name="title"
+                                value="{{ old('title', $post->title) }}">
                             <label for="floatingInput">Post Title</label>
                             @error('title')
                                 <span class="invalid-feedback" role="alert">
@@ -19,12 +21,10 @@
                                 </span>
                             @enderror
                         </div>
-
-                        <div class="d-none">
-                            <input required type="file" name="cover" id="cover-input" accept="image/png,image/jpeg">
-                        </div>
+                        <input type="file" name="cover" id="cover-input" accept="image/png,image/jpeg"
+                            class="d-none">
                         <div class="mb-3">
-                            <img src="{{ asset('storage/misc/image-default.png') }}" id="cover-img"
+                            <img src="{{ asset('storage/cover/' . $post->cover) }}" id="cover-img"
                                 class="w-100 cover-upload rounded" alt="">
                             @error('cover')
                                 <span class="invalid-feedback" role="alert">
@@ -37,7 +37,8 @@
                         <div class="form-floating mb-3">
                             <textarea required style="height: 10rem" type="text"
                                 class="form-control @error('description') is-invalid @enderror" id="floatingInput"
-                                placeholder="Post's Description" name="description">{{ old('description') }}</textarea>
+                                placeholder="Post's Description"
+                                name="description">{{ old('description', $post->description) }}</textarea>
                             <label for="floatingInput">Description</label>
                             @error('description')
                                 <span class="invalid-feedback" role="alert">
@@ -48,7 +49,7 @@
 
                         <div>
                             <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-message fw me-1"></i> Create
+                                <i class="fas fa-pen-fancy fw me-1"></i> Edit
                             </button>
                         </div>
                     </form>

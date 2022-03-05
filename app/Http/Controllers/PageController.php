@@ -9,7 +9,10 @@ class PageController extends Controller
 {
     public function detail($slug)
     {
-        $post = Post::where('slug', $slug)->first();
+        $post = Post::where('slug', $slug)->with(["comments" => function ($q) {
+            return  $q->orderBy('id', 'DESC');
+        }, "user"])->first();
+        // dd($post->comments->first());
         return view('post.show', ['post' => $post]);
     }
 }

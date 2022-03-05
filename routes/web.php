@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Models\Post;
@@ -27,3 +28,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/detail/{slug}', [PageController::class, 'detail'])->name('post.detail');
 
 Route::resource('/post', PostController::class);
+Route::resource('/comment', CommentController::class);

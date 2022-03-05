@@ -21,7 +21,7 @@
                         <div class="p-3 position-absolute bottom-0">
                             <div class="p-2 post-text rounded">
                                 <div class=" d-flex justify-content-between align-items-start">
-                                    <h3 class="fw-bold">{{ $post->title }}</h3>
+                                    <h3 class="fw-bold overflow-hidden">{{ $post->title }}</h3>
                                     <img src="{{ asset('storage/misc/' . $post->user->profile_photo) }}" height="30"
                                         width="30" alt="" class="rounded-circle">
                                 </div>

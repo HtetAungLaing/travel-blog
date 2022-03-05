@@ -36,7 +36,12 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
-        //
+        Comment::create([
+            "message" => $request->comment,
+            "post_id" => $request->post_id,
+            "user_id" => auth()->id()
+        ]);
+        return redirect()->to(url()->previous() . "#comments-section");
     }
 
     /**

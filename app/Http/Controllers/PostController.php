@@ -6,6 +6,8 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -66,7 +68,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('post.show', ['post' => $post]);
+        // $post = Post::where('slug',)
     }
 
     /**
@@ -77,7 +79,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        Gate::authorize('update', $post);
+        return view('post.edit', ['post' => $post]);
     }
 
     /**
@@ -89,7 +92,16 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $post->title = $request->title;
+        $post->description = $request->description;
+        if ($request->hasFile('cover')) {
+            Storage::delete('public/cover/' . $post->cover);
+            $fileName = "cover-" . uniqid() . "." . $request->file('cover')->extension();
+            $request->file('cover')->storeAs('public/cover/', $fileName);
+            $post->cover = $fileName;
+        }
+        $post->update();
+        return redirect()->back();
     }
 
     /**
@@ -100,6 +112,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        Gate::authorize('delete', $post);
+        Storage::delete('public/cover/' . $post->cover);
+        $post->delete();
+        return redirect()->route('index');
     }
 }
