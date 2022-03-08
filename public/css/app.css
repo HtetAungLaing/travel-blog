@@ -11326,3 +11326,13 @@ body {
   height: 300px;
   overflow-y: scroll;
 }
+
+.profile-photo-upload-icon:hover {
+  cursor: pointer;
+}
+
+#footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}

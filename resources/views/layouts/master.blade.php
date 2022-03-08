@@ -31,6 +31,9 @@
                                     class="nav-profile-photo rounded-circle border-2 border-white border">
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('edit-profile') }}">
+                                    Edit Profile
+                                </a>
                                 <a class="dropdown-item" href="{{ route('password.edit') }}">
                                     Change Password
                                 </a>
@@ -63,7 +66,7 @@
     </div>
     @yield('content')
 
-    <footer class="mt-3">
+    <footer class="mt-3" id="footer">
         <div class="bg-primary p-5">
             <div class="fw-bolder text-center">&copy; Kimmich . All rights reserve</div>
         </div>

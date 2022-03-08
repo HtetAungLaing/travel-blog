@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
@@ -60,6 +61,23 @@ class HomeController extends Controller
 
     public function updateProfile(Request $request)
     {
-        return $request;
+        $request->validate([
+            "name" => "required|min:4",
+            "photo" => "nullable|file|mimes:png,jpeg,|max:5000"
+        ]);
+
+        $user = User::find(auth()->id());
+        $user->name = $request->name;
+        if ($request->hasFile('photo')) {
+            if (auth()->user()->profile_photo !== "default-profile.png") {
+                Storage::delete('public/misc/' . auth()->user()->profile_photo);
+            }
+            $file = $request->file('photo');
+            $fileName = uniqid() . "-profile." . $file->extension();
+            $file->storeAs('public/misc/', $fileName);
+            $user->profile_photo = $fileName;
+        }
+        $user->update();
+        return redirect()->back();
     }
 }
