@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -13,6 +14,12 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         //
@@ -86,6 +93,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        Gate::authorize('delete', $comment);
+        $comment->delete();
+        return redirect()->to(url()->previous() . "#comments-section");
     }
 }

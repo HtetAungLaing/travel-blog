@@ -41,20 +41,56 @@
                 <p class="p-3 description-box my-3 shadow border border-1 rounded">
                     {{ $post->description }}
                 </p>
+                <div class="my-3">
+                    <h3 class="text-black-50" id="gallery">Gallery</h3>
+
+                    <div class="d-flex align-items-end w-100 p-3 overflow-scroll">
+
+                        {{-- @can('view', $gallery)
+                            <button class="btn btn-outline-primary" form="gallery-store" id="gallery-store" type="button">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        @endcan --}}
+                        @foreach (\App\Models\Gallery::all() as $gallery)
+                            <img src="{{ asset('storage/gallery/' . $gallery->photo) }}" class="ms-2 rounded-1"
+                                height="100" alt="">
+                            @can('delete', $gallery)
+                                <form action="{{ route('gallery.destroy', $gallery->id) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="btn btn-sm btn-danger" style="margin-left: -50px;margin-bottom: 10px"
+                                        type="submit"><i class="fas fa-trash"></i></button>
+                                </form>
+                            @endcan
+                        @endforeach
+                    </div>
+                </div>
                 <div id="comments-section" class="my-3">
                     <h3 class="text-black-50 mb-0">Comments</h3>
                     <div class="@if ($post->comments->first()) comment-box p-3 pt-0 my-3 @endif">
                         @forelse ($post->comments as $comment)
                             <div class="comment-wrapper p-3 shadow rounded">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{ asset('storage/misc/' . $comment->user->profile_photo) }}"
-                                        class="nav-profile-photo me-3" alt="">
-                                    <div>
-                                        <p class="mb-0">{{ $comment->user->name }}</p>
-                                        <small class="mb-0 small"><i
-                                                class="fa text-black-50 fa-clock-four fa-fw me-1"></i>{{ $comment->created_at->diffForHumans() }}
-                                        </small>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('storage/misc/' . $comment->user->profile_photo) }}"
+                                            class="nav-profile-photo me-3" alt="">
+                                        <div>
+                                            <p class="mb-0">{{ $comment->user->name }}</p>
+                                            <small class="mb-0 small"><i
+                                                    class="fa text-black-50 fa-clock-four fa-fw me-1"></i>{{ $comment->created_at->diffForHumans() }}
+                                            </small>
+                                        </div>
                                     </div>
+                                    @auth
+                                        @can('delete', $comment)
+                                            <form action="{{ route('comment.destroy', $comment->id) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-outline-danger btn-sm rounded-circle"><i
+                                                        class="fas fa-trash-can fa-fw"></i></button>
+                                            </form>
+                                        @endcan
+                                    @endauth
                                 </div>
                                 <div>
                                     <p class="mb-0">
@@ -64,6 +100,9 @@
                             </div>
                         @empty
                             <p class="small my-3">No comments yet!</p>
+                            @guest
+                                <p><a href="{{ route('login') }}">Login</a> to comment</p>
+                            @endguest
                         @endforelse
                     </div>
                     @auth
@@ -79,6 +118,10 @@
                                         <textarea name="comment" required class="form-control" id="" cols="30" rows="2"
                                             placeholder="Wite a comment ...."></textarea>
                                     </div>
+                                    @error('comment')
+                                        <small class="text-danger w-100">{{ $message }}</small>
+                                    @enderror
+
                                     <div>
                                         <button type='submit' class="btn btn-warning btn-sm my-3 ms-auto"><i
                                                 class="fas fa-paper-plane fa-fw" form-id="comment-create"></i>

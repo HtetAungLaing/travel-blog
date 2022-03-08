@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Gallery;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class StoreGalleryRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class StoreGalleryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,17 @@ class StoreGalleryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "post_id" => "required|exists:posts,id",
+            "photos" => "required",
+            "photos.*" => "file|mimes:png,jpeg|max:5000"
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            "photos.*.mimes" => "pone pal tin",
+            "photos.*.max" => "kyee tal"
         ];
     }
 }

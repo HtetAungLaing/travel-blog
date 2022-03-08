@@ -114,6 +114,9 @@ class PostController extends Controller
     {
         Gate::authorize('delete', $post);
         Storage::delete('public/cover/' . $post->cover);
+        foreach ($post->galleries as $gallery) {
+            Storage::delete('public/gallery/' . $gallery->photo);
+        }
         $post->delete();
         return redirect()->route('index');
     }

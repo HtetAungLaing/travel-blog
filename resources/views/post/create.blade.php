@@ -21,11 +21,12 @@
                         </div>
 
                         <div class="d-none">
-                            <input required type="file" name="cover" id="cover-input" accept="image/png,image/jpeg">
+                            <input type="file" name="cover" id="cover-input" accept="image/png,image/jpeg">
                         </div>
                         <div class="mb-3">
                             <img src="{{ asset('storage/misc/image-default.png') }}" id="cover-img"
-                                class="w-100 cover-upload rounded" alt="">
+                                class="w-100 cover-upload rounded @error('cover') border border-danger border-1 is-invalid @enderror"
+                                alt="">
                             @error('cover')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -47,7 +48,7 @@
                         </div>
 
                         <div>
-                            <button type="submit" class="btn btn-primary w-100">
+                            <button type=" submit" class="btn btn-primary w-100">
                                 <i class="fas fa-message fw me-1"></i> Create
                             </button>
                         </div>
@@ -55,6 +56,7 @@
                 </div>
             </div>
         </div>
+
 
     </section>
     @push('script')

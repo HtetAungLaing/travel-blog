@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Gallery;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -30,7 +31,7 @@ class GalleryPolicy
      */
     public function view(User $user, Gallery $gallery)
     {
-        //
+        return $user->id === $gallery->user_id;
     }
 
     /**
@@ -41,7 +42,7 @@ class GalleryPolicy
      */
     public function create(User $user)
     {
-        //
+        // return $user->id === $post->user_id;
     }
 
     /**
@@ -65,7 +66,7 @@ class GalleryPolicy
      */
     public function delete(User $user, Gallery $gallery)
     {
-        //
+        return $user->id === $gallery->user_id;
     }
 
     /**

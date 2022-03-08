@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Models\Post;
@@ -29,3 +31,12 @@ Route::get('/detail/{slug}', [PageController::class, 'detail'])->name('post.deta
 
 Route::resource('/post', PostController::class);
 Route::resource('/comment', CommentController::class);
+Route::resource('/gallery', GalleryController::class);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/change-password', [HomeController::class, 'editPassword'])->name('password.edit');
+    Route::post('/update-password', [HomeController::class, 'updatePassword'])->name('update-password');
+
+    Route::get('/edit-profile', [HomeController::class, 'editProfile'])->name('edit-profile');
+    Route::post('/edit-profile', [HomeController::class, 'updateProfile'])->name('update-profile');
+});

@@ -31,9 +31,11 @@
                                     class="nav-profile-photo rounded-circle border-2 border-white border">
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('password.edit') }}">
+                                    Change Password
+                                </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                                                                                         document.getElementById('logout-form').submit();">
+                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
 
@@ -60,6 +62,12 @@
 
     </div>
     @yield('content')
+
+    <footer class="mt-3">
+        <div class="bg-primary p-5">
+            <div class="fw-bolder text-center">&copy; Kimmich . All rights reserve</div>
+        </div>
+    </footer>
 </body>
 <script src="{{ asset('js/app.js') }}"></script>
 @stack('script')

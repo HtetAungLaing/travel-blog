@@ -18,4 +18,9 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class, 'post_id');
     }
+
+    public function galleries()
+    {
+        return $this->hasMany(Gallery::class);
+    }
 }

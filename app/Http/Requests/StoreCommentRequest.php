@@ -29,4 +29,11 @@ class StoreCommentRequest extends FormRequest
             "post_id" => "required|exists:posts,id"
         ];
     }
+
+    public function messages()
+    {
+        return [
+            "comment.required" => "yay lay kwar"
+        ];
+    }
 }

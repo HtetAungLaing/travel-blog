@@ -7,7 +7,8 @@
                     <h3 class="my-3 text-black-50">
                         Edit Here
                     </h3>
-                    <form action="{{ route('post.update', $post->id) }}" method="post" enctype='multipart/form-data'>
+                    <form action="{{ route('post.update', $post->id) }}" id="post-update" method="post"
+                        enctype='multipart/form-data'>
                         @csrf
                         @method('put')
                         <div class="form-floating mb-3">
@@ -47,12 +48,53 @@
                             @enderror
                         </div>
 
-                        <div>
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-pen-fancy fw me-1"></i> Edit
-                            </button>
-                        </div>
+
                     </form>
+                    <div>
+                        <h5 class="text-black-50" id="gallery">Gallery</h5>
+
+                        <div class="d-flex align-items-center w-100 p-3 overflow-scroll">
+
+                            <button class="btn btn-outline-primary" form="gallery-store" id="gallery-store" type="button">
+                                <i class="fas fa-plus"></i></button>
+                            <div class="d-flex align-items-end">
+                                @foreach ($post->galleries as $gallery)
+                                    <img src="{{ asset('storage/gallery/' . $gallery->photo) }}" class="ms-2 rounded-1"
+                                        height="100" alt="">
+                                    <form action="{{ route('gallery.destroy', $gallery->id) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-sm btn-danger" style="margin-left: -50px;margin-bottom: 10px"
+                                            type="submit"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                @endforeach
+                            </div>
+
+                        </div>
+                    </div>
+                    @error('photos')
+                        <p class="my-3 text-danger small"> {{ $message }}</p>
+                    @enderror
+                    @error('photos.*')
+                        <p class="my-3 text-danger small"> {{ $message }}</p>
+                    @enderror
+
+                    <div class="mb-3">
+
+                        <div>
+                            <form action=" {{ route('gallery.store') }}" method="POST" class="gallery-form"
+                                enctype="multipart/form-data" id="gallery-store">
+                                @csrf
+                                <input type="file" class="d-none gallery-input" multiple name="photos[]">
+                                <input type="hidden" name="post_id" value="{{ $post->id }}">
+                            </form>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" form="post-update" class="btn btn-primary w-100">
+                            <i class="fas fa-pen-fancy fw me-1"></i> Edit
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -74,6 +116,16 @@
                     img.src = e.target.result;
                 }
                 reader.readAsDataURL(file);
+            })
+
+
+            let galleryForm = document.querySelector('.gallery-form');
+            let galleryInput = document.querySelector('.gallery-input');
+            document.querySelector('#gallery-store').addEventListener('click', _ => {
+                document.querySelector('.gallery-input').click()
+            });
+            galleryInput.addEventListener('change', _ => {
+                galleryForm.submit();
             })
         </script>
     @endpush

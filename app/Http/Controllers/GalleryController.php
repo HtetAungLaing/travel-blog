@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGalleryRequest;
 use App\Http\Requests\UpdateGalleryRequest;
 use App\Models\Gallery;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller
 {
@@ -13,6 +15,11 @@ class GalleryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         //
@@ -36,7 +43,17 @@ class GalleryController extends Controller
      */
     public function store(StoreGalleryRequest $request)
     {
-        //
+        $files = $request->file('photos');
+        foreach ($files as $file) {
+            $name = "gallery-" . uniqid() . "." . $file->extension();
+            $file->storeAs('public/gallery/', $name);
+            $gallery = new Gallery();
+            $gallery->photo = $name;
+            $gallery->post_id = $request->post_id;
+            $gallery->user_id = auth()->id();
+            $gallery->save();
+        }
+        return redirect()->to(url()->previous() . "#gallery");
     }
 
     /**
@@ -81,6 +98,9 @@ class GalleryController extends Controller
      */
     public function destroy(Gallery $gallery)
     {
-        //
+        Gate::authorize('delete', $gallery);
+        Storage::delete('public/gallery/' . $gallery->photo);
+        $gallery->delete();
+        return redirect()->to(url()->previous() . '#gallery');
     }
 }
