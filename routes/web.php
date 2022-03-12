@@ -21,15 +21,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index', ['posts' => Post::all()]);
+    return view('index', ['posts' => Post::latest('id')->paginate(8)]);
 })->name('index');
 
-Auth::routes();
+Auth::routes(["verify" => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/detail/{slug}', [PageController::class, 'detail'])->name('post.detail');
 
-Route::resource('/post', PostController::class);
+Route::resource('/post', PostController::class)->middleware(['auth', 'verified']);
 Route::resource('/comment', CommentController::class);
 Route::resource('/gallery', GalleryController::class);
 

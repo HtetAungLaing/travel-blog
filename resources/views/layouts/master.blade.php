@@ -65,7 +65,7 @@
 
     </div>
     @yield('content')
-
+    <div class="my-5"></div>
     <footer class="mt-3" id="footer">
         <div class="bg-primary p-5">
             <div class="fw-bolder text-center">&copy; Kimmich . All rights reserve</div>

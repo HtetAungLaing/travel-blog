@@ -11290,11 +11290,16 @@ textarea.form-control-lg {
 }
 body {
   background: #fff3fd;
+  position: relative;
+  min-height: 100vh;
 }
 
 .nav-profile-photo {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .post-card {
@@ -11312,8 +11317,8 @@ body {
 
 .post-text {
   background: #ffffff44;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .description-box {
@@ -11331,8 +11336,15 @@ body {
   cursor: pointer;
 }
 
+.profile-photo {
+  width: 100px;
+  height: 100px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 #footer {
-  position: absolute;
   width: 100%;
   bottom: 0;
+  height: auto;
 }

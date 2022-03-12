@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Mail\PostMail;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -17,6 +19,10 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function __construct()
+    // {
+    //     $this->middleware(['auth', 'verified']);
+    // }
     public function index()
     {
         //
@@ -57,6 +63,12 @@ class PostController extends Controller
         $post->user_id = Auth::id();
         $post->cover = $coverName;
         $post->save();
+        // $postMail = new PostMail(); for single send
+        $toSendAddress = ["myueway98@gmail.com", "hahdev98@gmail.com", "echohtetaung@gmail.com"];
+        foreach ($toSendAddress as $address) {
+            Mail::to($address)->later(now()->addSecond(10), new PostMail($post));
+            //multiple so send(new Postmail) loc yay; not to write $ which intitate class
+        }
         return redirect()->route('index');
     }
 
