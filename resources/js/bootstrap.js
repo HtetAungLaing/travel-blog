@@ -1,8 +1,9 @@
 window._ = require('lodash');
-
+import ScrollReveal from 'scrollreveal';
 try {
     require('bootstrap');
-} catch (e) {}
+    window.ScrollReveal = ScrollReveal({ reset: true })
+} catch (e) { }
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

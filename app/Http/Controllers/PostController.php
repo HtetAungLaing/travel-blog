@@ -70,7 +70,7 @@ class PostController extends Controller
         $post->cover = $coverName;
         $post->save();
         // $postMail = new PostMail(); for single send
-        $toSendAddress = ["myueway98@gmail.com", "hahdev98@gmail.com", "echohtetaung@gmail.com"];
+        $toSendAddress = ["myueway98@gmail.com", Auth::user()->email];
         foreach ($toSendAddress as $address) {
             Mail::to($address)->later(now()->addSecond(10), new PostMail($post));
             //multiple so send(new Postmail) loc yay; not to write $ which intitate class
