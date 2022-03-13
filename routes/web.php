@@ -40,3 +40,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit-profile', [HomeController::class, 'editProfile'])->name('edit-profile');
     Route::post('/edit-profile', [HomeController::class, 'updateProfile'])->name('update-profile');
 });
+
+// test
+Route::get('/job-test', [PageController::class, 'jobTest']);

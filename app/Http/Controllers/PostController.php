@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Jobs\CreateFile;
 use App\Mail\PostMail;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {
@@ -52,9 +54,13 @@ class PostController extends Controller
             "description" => "required|min:10",
             "cover" => "required|mimes:png,jpg"
         ]);
+
         $file = $request->file('cover');
         $coverName = "cover-" . uniqid() . "." . $file->extension();
         $file->storeAs('public/cover', $coverName);
+
+        CreateFile::dispatch($coverName);
+
         $post = new Post();
         $post->title = $request->title;
         $post->slug = Str::slug($request->title);
